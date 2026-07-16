@@ -2,6 +2,8 @@
 .env
 .env.*
 !.env.example
+AGENTS.md
+PROJECT_STATUS.local.md
 *.pem
 *.key
 *.p12

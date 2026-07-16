@@ -148,6 +148,5 @@ in `verification.yaml`.
   review, or exploratory QA.
 
 For the methodology behind the workflow, see
-[docs/methodology.md](docs/methodology.md). Repository workflow and the
-GitHub-growth register are documented in [AGENTS.md](AGENTS.md) and
-[docs/github-growth.md](docs/github-growth.md).
+[docs/methodology.md](docs/methodology.md). The public GitHub-growth register
+is maintained in [docs/github-growth.md](docs/github-growth.md).
