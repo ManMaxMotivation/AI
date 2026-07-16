@@ -12,7 +12,8 @@ qa/<task-id>/
 
 Install the skill, add the project rule, and use the staged-session prompts.
 Run analysis first; inspect it before asking for the algorithm. Run automated
-evidence and the manual test case only in later, explicit sessions.
+checks, the manual test case, and the final report only in later, explicit
+sessions.
 
 ## Keep Human Gates Between Stages
 
@@ -21,7 +22,9 @@ The engineer controls the sequence:
 1. Ask only for analysis and review what the agent understood.
 2. Ask only for the algorithm and review tools, routes, and stop conditions.
 3. Authorize automated checks only after the route is accepted.
-4. Ask for the manual test case after automated scope is known.
+4. Ask for the manual test case after automated scope and factual evidence are known.
+5. Request a final report only after actual execution, then verify that it
+   reproduces approved manual steps and lists every relevant artifact.
 
 This prevents an early misunderstanding from being copied into every later
 artifact. Use the copyable prompts in
@@ -57,9 +60,19 @@ and human-readable evidence according to your project's policy.
 ## Keep Manual Work Explicit
 
 Manual scenarios should answer questions that are not covered by the available
-automation. Record the environment, action, result, evidence, and blocker.
-This prevents a report from implying that browser, visual, or timing behavior
-was checked when only a service-level assertion ran.
+automation. Keep preconditions, entry points, one action, and one observable
+expected result explicit. Record the environment, actual result, evidence, and
+blocker only after execution. This prevents a report from implying that browser,
+visual, or timing behavior was checked when only a service-level assertion ran.
+
+## Treat the Report as a Traceability Check
+
+The final report is not a short release note. It copies approved manual
+test-case actions and expected results in the same order, adds factual actual
+results, records behavior-proving automated checks, lists the full artifact
+set, and preserves the original DoD wording. Before saving or publishing, run a
+mechanical comparison with the approved test case. A missing or blocked result
+stays missing or blocked in the report.
 
 ## Improve From Real Friction
 

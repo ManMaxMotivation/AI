@@ -1,124 +1,131 @@
 ---
 name: ai-assisted-qa
-description: "Guide a QA agent through a four-stage workflow for complex product changes: scope analysis, risk-based verification algorithm, automated evidence, manual exploratory testing, and traceable reporting. Use when asked to analyze a task, pull request, code change, bug fix, release candidate, data migration, API contract, UI behavior, or to create test cases and QA reports."
+description: "Run a controlled, artifact-led QA workflow for a complex product task: full analysis, a reproducible verification algorithm, executable automated checks with evidence, an approved manual test case, and a traceable final report. Use for QA analysis, code or pull-request review, test design, automated verification, manual test cases, and QA reports."
 ---
 
 # AI-Assisted QA
 
-Create a factual, reviewable QA artifact chain. Do not jump directly from a
-task description to test execution or a verdict.
+This skill is an operating contract for QA work. It is designed to prevent an
+agent from guessing requirements, shrinking changed-risk scope, or treating a
+planned or partial check as a result.
 
-## Human-Gated Session Mode
+## Non-Negotiable Session Contract
 
-Use staged sessions by default. Run only the phase the user explicitly requests;
-do not continue to the next phase because a prior artifact looks complete. This
-lets the engineer inspect the agent's understanding and correct it before later
-work depends on it.
+Run only the stage explicitly requested by the user. The normal sequence is:
 
-1. **Analysis**: establish scope and risk.
-2. **Algorithm**: agree the reproducible verification route.
-3. **Automated evidence**: prepare and, when authorized, run the relevant
-   checks.
-4. **Manual test case**: prepare human scenarios from the approved prior work.
+1. Full analysis.
+2. Verification algorithm.
+3. Automated checks, executable test artifacts, and factual evidence.
+4. Manual test case.
+5. Final QA report.
 
-Show the complete phase artifact in chat first. Save only the same approved
-content, without silent rewriting. Create a final report only after execution
-evidence exists and the user requests reporting.
+These are separate human-gated messages. Do not proceed merely because the
+previous artifact appears complete. Present the complete artifact for review;
+when a stage permits saving, persist the same reviewed text without silent
+compression, rewording, reordering, or format normalization. A report is not a
+stage-three byproduct: write it only when actual execution evidence exists and
+the user asks for it.
 
-Use `references/staged-session-prompts.md` for copyable phase prompts.
+Use the complete prompts in `references/staged-session-prompts.md`. They are
+the public, portable form of the workflow. Do not replace them with a shorter
+generic checklist.
 
-## Required Inputs
+## Required Sources and Preflight
 
-Collect the available task description, acceptance criteria or DoD, changed
-code or pull request, existing tests, relevant configurations, and prior
-artifacts. Identify missing sources explicitly. Do not invent requirements,
-environment state, execution results, or access.
+Before selecting coverage, obtain every available source of truth:
 
-Before reading or publishing material, apply the privacy rules in
-`references/publication-safety.md`.
+- task description, status, acceptance criteria, DoD, and custom fields;
+- notes, attachments, screenshots, linked/parent/sibling work;
+- merged revisions, pull requests, delivery information, and existing tests;
+- actual local implementation and its dependencies;
+- approved prior artifacts, route memory, and process barriers.
 
-If the project has route memory, read it before route discovery. Use the
-`references/route-memory.md` protocol: find a proven matching route, compare it
-with the current task, reuse it where valid, and update or add it only after a
-new route is proven.
+Identify missing sources. Do not invent task intent, entry points, data,
+environment state, execution results, access, or a passing outcome.
 
-## Workflow
+Apply `references/publication-safety.md` before reading material for public
+reuse and before publishing an artifact. A public example must be independently
+written and anonymized; do not copy proprietary case text, screenshots, URLs,
+identifiers, logs, or test data.
 
-### 1. Analyze the Full Scope
+## Route Memory and Barriers
 
-Create `analysis.md` using the artifact contract. Establish:
+Before new route discovery, search the project's private route atlas and
+similar approved algorithms. Reuse a matching proven route first. At the end
+of the algorithm stage, synchronize it as `compare -> reuse/update/add`.
 
-- the change in plain language and its acceptance criteria;
-- the source of truth for each requirement;
-- changed components, data contracts, routes, state transitions, and dependent
-  systems;
-- regression zones and a risk reason for each one;
-- constraints, unknowns, and blockers.
+Only confirmed, reusable routes belong in the atlas. Keep a recurring process
+barrier in its barrier record. Keep one-off root cause, incident details, and
+task-specific diagnosis in the task algorithm. Read
+`references/route-memory.md` for the full protocol.
 
-Read the changed code and relevant existing tests before selecting coverage.
-Do not replace the described scope with a happy path or representative subset
-unless the analysis states why that subset covers the changed risk.
+## Stage Requirements
 
-### 2. Build the Verification Algorithm
+### 1. Analysis
 
-Create `algorithm.md` before executing checks. Define an ordered route from
-preconditions to observable outcomes. For every step state:
+Create the full scope contract before execution. It must establish delivery
+status, implementation facts, prior and intended behavior, requirement/DoD
+coverage, changed surface, dependencies, state transitions, risks, regression
+zones, constraints, and the automation/manual boundary. For UI work, decide
+whether browser automation is both possible and needed, what it can prove, and
+what remains manual.
 
-- requirement or risk addressed;
-- system layer and approved tool or entry point;
-- expected evidence;
-- stop condition or handoff needed.
+### 2. Verification Algorithm
 
-Use `references/risk-patterns.md` when the task involves state propagation, UI
-state, contracts, legacy data, asynchronous processing, or cross-system flows.
+Create a repeatable route from preconditions to observable proof. First make a
+read-only preflight of every needed contour and entry point. If a required
+proof is blocked, record the exact impact and stop that branch. For every route
+step, name the requirement/risk, user action, agent action, layer/entry point,
+evidence, expected factual outcome, and stop condition. Keep the route focused
+but do not omit a changed-risk branch merely to make it shorter.
 
-After the task route is built, synchronize route memory using
-`compare -> reuse/update/add`. Keep one-off root causes in the task artifact and
-repeatable process barriers in a separate barrier record; neither belongs in a
-reusable route map by default.
+### 3. Automated Checks and Evidence
 
-### 3. Produce Automated Evidence
+Choose the smallest layer that actually proves each risk. Prefer existing
+project-native runners. Select shell, Python, browser automation, or a native
+runner deliberately and preflight the dependencies used. Run an executable
+artifact end-to-end before presenting it as rerunnable or suitable for CI.
 
-Create `automated-checks.md`. Prefer the project's existing test runner and
-approved environment. Select the narrowest test layer that proves the behavior:
-unit, contract, API, integration, data, or browser.
+Keep three things distinct: executable checks, their factual outcome report,
+and their evidence. Preserve failed and blocked scenarios. For browser-visible
+behavior, leave human-readable proof: action/transition video or focused static
+screenshot as appropriate. Raw logs and responses supplement, not replace,
+visual evidence.
 
-Record the exact scope, command or procedure, evidence location, and factual
-outcome. A green check proves only what it observed. If a required check cannot
-run, record the blocker and its impact; do not convert it into a pass.
+### 4. Manual Test Case
 
-Do not run destructive production operations, publish data, or execute
-unreviewed commands merely to obtain coverage.
+Create one complete human test case from approved evidence. It must cover the
+original DoD and the human-only or independently required risk. Use explicit,
+confirmed entry points and test data. A step has one concrete action and one
+observable expected result. Do not duplicate automation, use placeholders in
+executable technical steps, or turn internal code names into user-visible
+expected results. The draft is approved before saving and then saved 1:1.
 
-### 4. Define and Perform Manual Exploration
+### 5. Final Report
 
-Create `manual-test-cases.md`. Keep manual work separate from automated work.
-Include scenarios requiring human judgment, such as visual composition,
-accessibility, timing windows, unusual input, external handoffs, and user
-journeys not faithfully reproducible in the available automation.
-
-Record actual observations only after they occur. Mark not-run, blocked, and
-failed scenarios plainly.
-
-### Report Traceability
-
-Create `report.md` from the completed artifacts. Map each requirement or DoD
-item to automated evidence, manual evidence, and its factual status. State
-remaining risk and blockers. Do not call the task complete unless every
-required item is evidenced or an explicit owner accepts the limitation.
+Write only from actual execution records. The manual execution section must
+repeat the approved test-case steps in the same order and detail, including
+action, expected result, and actual result. Do not collapse steps. Preserve
+the original DoD wording. List all relevant artifacts and their provenance.
+The report may say `PASS`, `FAIL`, `BLOCKED`, `PARTIAL`, or `NOT RUN`; it may
+not infer a pass from intent, a green unrelated test, or an unavailable
+environment. Use `references/final-report-template.md`.
 
 ## Quality Gates
 
-Before finalizing, verify that:
+Before completing a stage, confirm that:
 
-- every requirement has a traceable treatment or an explicit blocker;
-- each automated check has a risk-based reason and real result;
-- manual checks cover the gaps that automation cannot prove;
-- evidence sources are specific enough for another person to inspect;
-- findings distinguish fact, inference, and open question;
-- the artifact chain contains no credentials, private endpoints, personal data,
-  internal identifiers, or copied proprietary content.
+- all available authoritative sources were reconciled or explicitly missing;
+- each selected check has a risk-based reason;
+- every requirement has a proof path or an explicit blocker;
+- automation and manual work are separate and neither overclaims coverage;
+- actual evidence, not prose, supports every reported result;
+- route-memory updates contain only proven reusable knowledge;
+- the artifact has no credentials, private endpoints, personal data, internal
+  identifiers, customer data, proprietary code, or copied private text;
+- the final report mechanically traces to the approved test case and factual
+  automated evidence.
 
-Use `references/artifact-contract.md` for mandatory artifact sections and
-`assets/project-agent-rules.md` when a project needs a concise local rule. Read
-`references/eleven-principles.md` before finalizing complex work.
+Use `references/artifact-contract.md` as the mandatory detailed contract and
+copy `assets/AGENTS.md` into a target project's local instructions when the
+project needs this workflow.

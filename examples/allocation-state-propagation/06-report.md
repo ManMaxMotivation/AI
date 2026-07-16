@@ -1,196 +1,237 @@
 # Synthetic Final QA Report: Allocation State Propagation
 
 > This is a fictional completed-report example. All system names, timestamps,
-> candidates, artifacts, and results are invented. It demonstrates report
-> structure and evidence discipline; it is not a release approval.
+> candidates, artifacts, and results are invented. It demonstrates how a final
+> report must preserve approved manual steps and factual evidence; it is not a
+> release approval for a real product.
 
-## Change Description and Tested Scope
+## Outcome
 
-The item detail page now consumes the published `allocation_state` field. A
-held item renders **On hold**; an unavailable item renders **Currently
-unavailable**. In both states, detail-page and comparison request actions must
-be inert. An active item must retain its existing allocation path.
+Status: PASS in this synthetic run.
 
-The test scope included:
+Tested revision or delivery identifier: `sample-build-42` (fictional).
 
-- state contract and payload-to-label mapping;
-- detail page on desktop and mobile profiles;
-- independently rendered comparison actions;
-- active baseline behavior;
-- the interval between allocation-service closure and catalog-snapshot refresh;
-- delivery and publication evidence needed to classify a failed result.
+Target contour: fictional approved test environment; desktop and mobile
+browser profiles.
 
-Excluded from this fictional example: search result ranking, pricing, and the
-deleted-item not-found flow. They were not changed by the task and were not
-needed to prove the allocation-state behavior.
+## Change Description
 
-## Manual Work Performed
+1. The item detail page consumes published `allocation_state`.
+2. A held item shows **On hold** and an unavailable item shows **Currently
+   unavailable**.
+3. In both non-active states, detail-page and comparison request actions are
+   inert and have no allocation destination.
+4. An active item retains its existing allocation path.
+5. The changed-risk scope includes the interval between allocation-service
+   closure and the published catalog snapshot reaching the visible page.
 
-| ID | Human check | Profile | Factual synthetic result |
-| --- | --- | --- | --- |
-| MANUAL-01 | Reviewed held and unavailable labels in title area. | Desktop | Both labels were legible and aligned with the fictional design specification. |
-| MANUAL-02 | Used pointer and keyboard on inactive actions. | Desktop and mobile | No disabled control navigated or retained an actionable focus path. |
-| MANUAL-03 | Followed active-item allocation journey through its first valid step. | Desktop | Active action opened the expected allocation step. |
-| MANUAL-04 | Observed allocation transition after approved state change. | Desktop | The action became inert before a customer could enter a closed allocation route. |
+## What Was Checked Manually
 
-Manual evidence complements, but does not replace, the browser and data-layer
-evidence recorded below.
+1. Held and unavailable detail-page labels in the approved desktop and mobile
+   title areas.
+2. Desktop, mobile, card, and comparison request controls for non-active
+   candidates.
+3. The active-item allocation entry path on desktop and separate mobile action
+   where it exists.
+4. A controlled, user-authorized transition from active to held state.
+5. The final state after publication, including comparison surface when in
+   scope.
 
 ## Execution Run
 
-### 1. Delivery and Contract Preflight
+1. Open the held candidate in the approved desktop browser profile.
+   **Expected result:** The detail page is reachable and does not show the
+   generic deleted-item experience. **On hold** is visible in the approved
+   title area. The desktop request control is visibly disabled, exposes
+   disabled semantics, and does not navigate to an allocation route.
+   **Actual result:** The fictional held page was reachable. Scoped title
+   evidence showed **On hold**. The request element was disabled, had no
+   allocation destination, and did not navigate. Status: passed.
 
-**Expected:** The test environment serves the target change and the public
-state contract accepts `active`, `held`, and `unavailable`.
+2. Open the same held candidate in the approved mobile profile and scroll to
+   the sticky request area.
+   **Expected result:** The item remains reachable and shows **On hold**. The
+   mobile sticky request control is disabled, has no allocation destination,
+   and cannot be activated by touch or keyboard-equivalent interaction.
+   **Actual result:** The fictional mobile page showed **On hold**. The sticky
+   action exposed disabled semantics, had no route, and did not navigate by the
+   supported touch or keyboard-equivalent interaction. Status: passed.
 
-**Actual:** Synthetic build `sample-build-42` contained the target change.
-Contract checks confirmed all three values and explicit customer label mapping.
-The preflight passed.
+3. Open the comparison surface containing the held candidate. Inspect every
+   request control that belongs to that item, including any card and summary
+   actions.
+   **Expected result:** The candidate can be displayed for comparison if that
+   is allowed by product rules, but no request control for it can navigate to
+   an allocation route. An active compare action is a defect even if the detail
+   page is correct.
+   **Actual result:** The fictional desktop card action, desktop summary
+   action, and mobile comparison action for the held candidate had no active
+   allocation destination. Status: passed.
 
-### 2. Candidate Validation
+4. Open the unavailable candidate in the approved desktop browser profile.
+   **Expected result:** The detail page remains reachable. The title area shows
+   **Currently unavailable**, not the raw technical state. The desktop request
+   control is disabled and has no actionable destination.
+   **Actual result:** The fictional published payload contained
+   `allocation_state=unavailable`; the page showed **Currently unavailable**.
+   The request control was disabled and had no destination. Status: passed.
 
-**Expected:** Each candidate has a reachable page, matching published snapshot,
-and expected allocation-service availability before browser assertions start.
+5. Open the unavailable candidate in the approved mobile profile and inspect
+   the sticky request area.
+   **Expected result:** The label is visible and understandable in the mobile
+   layout. The sticky action is disabled and cannot open allocation.
+   **Actual result:** The fictional mobile title label was visible and the
+   sticky action was disabled. No supported interaction opened allocation.
+   Status: passed.
 
-**Actual:** Three fictional candidates were validated at `2030-04-18T10:00Z`:
-one active, one held, and one unavailable. No stale candidate was used.
+6. Open the comparison surface for the unavailable candidate in desktop and
+   the separately implemented mobile profile, when present.
+   **Expected result:** Every visible request control is disabled or absent as
+   defined by the product. No control exposes an allocation link or starts a
+   navigation that the service will reject.
+   **Actual result:** Each observed fictional comparison control was inert or
+   absent according to the state rule. No control exposed a link or navigation
+   into the closed allocation route. Status: passed.
 
-### 3. Held State on Desktop
+7. Open the fresh active candidate in the desktop profile.
+   **Expected result:** No held or unavailable label is present. The request
+   control is enabled and opens the valid first allocation step. The state
+   feature has not disabled the existing active-item journey.
+   **Actual result:** The fictional active candidate rendered no non-active
+   label. Its request control was enabled and opened the expected first
+   allocation step. Status: passed.
 
-**Expected:** Held detail page remains reachable, shows **On hold**, and has no
-actionable desktop request control.
+8. Open the active candidate in the mobile profile if the mobile action is a
+   separate implementation.
+   **Expected result:** The sticky action remains enabled and its behavior
+   matches the approved active desktop journey.
+   **Actual result:** The separate fictional mobile action was enabled and
+   followed the same valid allocation entry behavior. Status: passed.
 
-**Actual:** The page rendered normally. The scoped title evidence showed **On
-hold**. The request element was a disabled button without an allocation
-destination. The check passed.
+9. Before changing state, record the active candidate's page, action state,
+   snapshot version, service availability, and current time. Confirm with the
+   user that the approved allocation action may now be performed.
+   **Expected result:** The baseline is unambiguous: the page is active, the
+   action is actionable, the service accepts allocation, and the evidence has a
+   timestamp that can be compared with later observations.
+   **Actual result:** Before the fictional handoff, the agent recorded an
+   active page, enabled action, service availability, and snapshot version at
+   `2030-04-18T10:18:16Z`. The approved operator handoff was confirmed.
+   Status: passed.
 
-### 4. Held State on Mobile
+10. The authorized person performs the real allocation action or approved state
+    change for the selected active candidate, then reports completion time to
+    the agent.
+    **Expected result:** The action creates the intended allocation lifecycle
+    event for exactly one candidate. The tester does not change multiple
+    candidates or assume the state changed without a factual confirmation.
+    **Actual result:** The fictional authorized operator created one held-state
+    transition and reported completion at `2030-04-18T10:18:24Z`. The agent did
+    not mutate any state. Status: passed.
 
-**Expected:** Mobile sticky request action is inert for held state.
+11. Immediately after the handoff, reopen the item page while the agent
+    observes service closure, published snapshot state, and the request
+    control. Repeat only according to the approved algorithm until final
+    consistency or a stop condition.
+    **Expected result:** If the service is already closed, the page must not
+    expose an action that can send the customer to a known rejected route. If
+    the snapshot is delayed, record the exact state of the label and control as
+    a transition finding rather than silently waiting for the final state.
+    **Actual result:** Fictional evidence showed service closure at `T+08s`,
+    while the page snapshot still showed the former active state. The request
+    control became inert at `T+10s` and had no destination; publication reached
+    the snapshot at `T+34s` and the visible label at `T+39s`. The interval was
+    classified as safe, not hidden by waiting for final consistency. Status:
+    passed.
 
-**Actual:** The mobile sticky action exposed disabled semantics and no route.
-Touch and keyboard-equivalent interaction did not navigate. The check passed.
+12. After publication completes, reopen the same candidate in desktop and
+    mobile profiles. Inspect comparison again if it is in scope.
+    **Expected result:** Published payload, visible label, request control, and
+    service state agree. The final page is reachable, non-active actions are
+    inert, and the active baseline remains unaffected for a separate current
+    candidate.
+    **Actual result:** The fictional final held page showed **On hold** with
+    inert desktop and mobile actions. Comparison remained inert. The separate
+    active baseline remained enabled. Status: passed.
 
-### 5. Unavailable State on Desktop
+## Agent Actions
 
-**Expected:** Unavailable detail page remains reachable, shows **Currently
-unavailable**, and has no actionable desktop request control.
+Automated checks: total `10`; passed `10`; failed `0`; blocked/not run `0`.
 
-**Actual:** The published payload contained `allocation_state=unavailable`.
-The title label matched the product wording and the action had no destination.
-The check passed.
+1. Read the synthetic task source, implementation mapping, contract tests, and
+   delivery metadata before execution.
+   **Expected result:** The state contract and delivery scope are established
+   before any test selects candidates or a browser route.
+   **Actual result:** The fictional analysis confirmed `active`, `held`, and
+   `unavailable` state mapping, independent detail/comparison surfaces, and
+   the transition-window risk. Status: passed.
 
-### 6. Unavailable State on Mobile
+2. Reuse the approved synthetic allocation-lifecycle and browser-action routes
+   after comparing them with the task's state contract.
+   **Expected result:** The agent uses a matching proven route rather than
+   guessing a new cross-layer route.
+   **Actual result:** The fictional route supplied candidate validation,
+   service/snapshot observations, and browser evidence points. Status: passed.
 
-**Expected:** Mobile sticky request action is inert for unavailable state.
+3. Run AUTO-01 through AUTO-08: contract and focused browser checks for held,
+   unavailable, active, and comparison behavior.
+   **Expected result:** Non-active controls have no viable allocation route;
+   active behavior remains available.
+   **Actual result:** All eight fictional scenarios passed with state mapping,
+   disabled semantics, destination, and browser assertions recorded in
+   `04-automated-checks.md`. Status: passed.
 
-**Actual:** The control was disabled, had no allocation route, and did not
-navigate when activated through the supported mobile interaction path. The
-check passed.
+4. Run AUTO-09 and AUTO-10: read-only transition timing and stale-active-action
+   detection.
+   **Expected result:** The evidence orders service, publication, snapshot, and
+   UI events and fails if service closure leaves an actionable route.
+   **Actual result:** The fictional timeline showed an inert action before the
+   final label, and no rejected allocation route was reachable. Status: passed.
 
-### 7. Comparison Surface
+## Verification Artifacts
 
-**Expected:** Every visible request action for held and unavailable items is
-inert, including card and summary locations.
+1. `01-task-brief.md` - fictional requirement and acceptance criteria source.
+2. `02-analysis.md` - synthetic scope, dependencies, risk zones, and
+   automation/manual boundary.
+3. `03-algorithm.md` - approved synthetic verification route, roles, and stop
+   conditions.
+4. `04-automated-checks.md` - automation architecture, scenario matrix, and
+   synthetic execution record.
+5. `05-manual-test-cases.md` - approved human execution source reproduced
+   above.
+6. `06-report.md` - this fictional factual-report structure.
+7. `evidence/` - in a real task, a private package of focused screenshots,
+   interaction video, DOM facts, and timeline records. It is intentionally not
+   included in this public fictional example.
 
-**Actual:** The desktop card action, desktop summary action, and mobile compare
-action were inspected for both non-active candidates. All were inert and had no
-allocation destination. The regression check passed.
+## DoD
 
-### 8. Active Baseline
-
-**Expected:** Active item has no non-active label and retains the allocation
-entry path.
-
-**Actual:** The active candidate rendered no state label. Its request action
-was enabled and opened the first valid allocation step. The baseline passed.
-
-### 9. Controlled Allocation Transition
-
-**Expected:** An authorized person creates exactly one allocation transition;
-the agent remains read-only and records a timestamped baseline.
-
-**Actual:** The synthetic operator created one approved held state at
-`2030-04-18T10:18:24Z`. The agent had captured the active page, active action,
-service response, and snapshot version before the handoff. The handoff was
-recorded as complete.
-
-### 10. Service and Publication Timeline
-
-**Expected:** Service closure, publication event, snapshot update, page label,
-and action state can be ordered in time.
-
-**Actual:** The synthetic evidence showed service closure at `T+08s`, a
-publication event at `T+19s`, snapshot state at `T+34s`, and final visible
-label/action update at `T+39s`. The timeline was complete.
-
-### 11. Transition-Window Safety
-
-**Expected:** After service closure, the customer cannot enter a rejected
-allocation route from an apparently active detail-page action.
-
-**Actual:** Between `T+08s` and `T+39s`, the page snapshot still represented
-the former active state, but the request control became inert at `T+10s` and
-had no destination. No navigation to the closed route was possible. The
-transition was classified as safe.
-
-### 12. Final Consistency Retest
-
-**Expected:** Final snapshot, visible label, action state, and service response
-agree after publication.
-
-**Actual:** The final held page showed **On hold** with inert desktop and mobile
-actions. The active control case remained enabled on the independent baseline
-candidate. The final consistency retest passed.
-
-## Agent Actions and What They Proved
-
-| Action | What it proved | DoD/requirement covered |
-| --- | --- | --- |
-| Read task sources, implementation mapping, contract tests, and delivery metadata. | Scope and state contract were established before execution. | R1-R6 |
-| Reused allocation lifecycle and browser-action routes from private route memory. | Existing proven paths were used instead of speculative route discovery. | Process quality; R1-R6 |
-| Validated fresh candidates before browser checks. | Each UI result started from matching data, snapshot, and service facts. | R1-R5 |
-| Ran focused browser scenarios for detail, mobile, and comparison actions. | Non-active controls were inert across independent surfaces. | R1-R5 |
-| Recorded service, publication, snapshot, and UI timestamps during transition. | The final result distinguished safe interim behavior from delayed publication. | R6 |
-| Performed final route-memory comparison. | The verified cross-layer path was suitable for a private route-atlas update. | Reuse quality |
-
-## Evidence Package
-
-| Artifact | Purpose | Source |
-| --- | --- | --- |
-| `01-task-brief.md` | Product requirement and acceptance criteria. | Synthetic task source. |
-| `02-analysis.md` | Scope, dependencies, risk zones, and automation boundary. | Synthetic analysis based on the task source. |
-| `03-algorithm.md` | Reusable route, roles, stop conditions, and coverage plan. | Approved synthetic analysis and route-memory protocol. |
-| `04-automated-checks.md` | Automation design, scenario matrix, and synthetic execution evidence. | Project-native test-layer model. |
-| `05-manual-test-cases.md` | Human scenarios and expected observations. | Approved synthetic algorithm. |
-| `06-report.md` | Traceability and factual conclusion. | Synthetic execution and manual records. |
-| `evidence/` | Scoped screenshots, interaction video, DOM facts, and timeline record in a real case. | Not included here because this example is fictional. |
-
-## Requirement and DoD Traceability
-
-| Item | Automated evidence | Manual evidence | Status |
-| --- | --- | --- | --- |
-| R1: held page is reachable, clear, and inert | AUTO-01, AUTO-03, AUTO-04 | MANUAL-01, MANUAL-02 | Passed in synthetic example |
-| R2: unavailable page is reachable, clear, and inert | AUTO-02, AUTO-05, AUTO-06 | MANUAL-01, MANUAL-02 | Passed in synthetic example |
-| R3: inactive actions cannot navigate | AUTO-03 through AUTO-06 | MANUAL-02 | Passed in synthetic example |
-| R4: active path remains available | AUTO-07 | MANUAL-03 | Passed in synthetic example |
-| R5: comparison surface follows rule | AUTO-08 | MANUAL-02 | Passed in synthetic example |
-| R6: transition window is safe | AUTO-09, AUTO-10 | MANUAL-04 | Passed in synthetic example |
+1. [PASS] R1: held page is reachable, clear, and inert.
+   Evidence or limitation: AUTO-01, AUTO-03, AUTO-04 and execution steps 1-3.
+2. [PASS] R2: unavailable page is reachable, clear, and inert.
+   Evidence or limitation: AUTO-02, AUTO-05, AUTO-06 and execution steps 4-6.
+3. [PASS] R3: inactive actions cannot navigate.
+   Evidence or limitation: AUTO-03 through AUTO-06 and execution steps 1-6.
+4. [PASS] R4: active path remains available.
+   Evidence or limitation: AUTO-07 and execution steps 7-8.
+5. [PASS] R5: comparison surface follows rule.
+   Evidence or limitation: AUTO-08 and execution steps 3 and 6.
+6. [PASS] R6: transition window is safe.
+   Evidence or limitation: AUTO-09, AUTO-10 and execution steps 9-12.
 
 ## Findings, Blockers, and Remaining Risk
 
-No blocker occurred in this fictional run. The result still has boundaries:
-
-1. It does not prove every localization or browser profile.
-2. It does not replace accessibility review with assistive technology.
-3. It does not prove behavior under every publication outage.
-4. A real project must retain private artifacts, exact data, and environment
-   links outside this public playbook.
+1. No product finding occurred in this fictional run.
+2. No fictional execution blocker occurred.
+3. This example does not prove every localization or browser profile, assistive
+   technology behavior, or every publication outage. A real task must list its
+   actual private evidence, data, environments, and unresolved risk.
 
 ## Conclusion and Decision Owner
 
 The synthetic evidence demonstrates a complete artifact chain for a complex
-state-propagation change. It demonstrates how an agent should reason and
-record facts; it does not represent a real product result. In a real task, the
-QA owner and product/release owner review the actual evidence and decide whether
-remaining risk is acceptable.
+state-propagation change: analysis drives the algorithm, the algorithm drives
+repeatable automated proof, the approved manual test case is reproduced in the
+execution run, and the report makes remaining uncertainty explicit. In a real
+task, the QA owner and product/release owner decide whether the actual evidence
+and remaining risk are sufficient.

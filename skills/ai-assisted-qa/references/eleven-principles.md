@@ -1,7 +1,7 @@
 # Eleven Principles of AI-Assisted QA
 
-1. **Gate each phase.** Analyze, algorithmize, automate, and write manual cases
-   in separate user-controlled sessions.
+1. **Gate each artifact.** Analyze, algorithmize, automate, write manual cases,
+   and report in separate user-controlled sessions.
 2. **Start from sources of truth.** Requirements, DoD, code, approved tests,
    and confirmed artifacts outrank assumptions.
 3. **Map full changed risk.** Do not reduce scope to a happy path without an
@@ -18,8 +18,9 @@
    does not prove visual, accessibility, timing, or user-flow behavior.
 9. **Stop on facts.** Record exact blockers and request a handoff instead of
    retrying guesses or presenting a partial result as a pass.
-10. **Preserve traceability.** Every conclusion must point to a requirement,
-    evidence source, and factual status.
+10. **Preserve literal traceability.** Every report conclusion must point to a
+    requirement, evidence source, factual status, and the approved manual step
+    it represents; do not compress the manual run into a summary.
 11. **Protect private context.** Treat work artifacts as private, publish only
     synthetic reconstructions, and review both secrets and business-sensitive
     details before release.

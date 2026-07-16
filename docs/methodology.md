@@ -12,29 +12,32 @@ clear explanation of what was not verified.
 
 ## The Method
 
-The playbook makes four stages explicit.
+The playbook makes five separate artifacts explicit.
 
 1. **Analysis** establishes the actual scope before testing. It starts from
    requirements and code, identifies sources of truth and changed-risk zones,
    and records uncertainty instead of hiding it.
 2. **Algorithm** defines the test route before execution. It makes each step,
    evidence source, tool, and stop condition reviewable.
-3. **Automated evidence** proves deterministic behavior at the appropriate
-   layer. It is not expanded into a broad matrix without a changed-risk reason.
-4. **Manual exploration** investigates the gaps automation cannot honestly
-   close: visual quality, accessibility, timing, user understanding, and
-   external or human handoffs.
+3. **Automated checks** create an executable, repeatable proof at the
+   appropriate layer, its factual outcome report, and evidence. It is not
+   expanded into a broad matrix without a changed-risk reason.
+4. **Manual test case** turns the remaining user-visible and human-only risk
+   into a complete, reviewable execution document before it is run.
+5. **Final report** reproduces approved manual steps and factual automated
+   evidence without compressing them into a generic summary.
 
-The report connects each requirement or DoD point to these stages. It is a
-decision record, not a substitute for product or release ownership.
+The report connects each original requirement or DoD point to executed evidence
+or an explicit limitation. It is a decision record, not a substitute for
+product or release ownership.
 
 ## Human Control Is Part of the Method
 
 The stages are separate sessions by design. The engineer reviews the analysis
 before approving the algorithm, reviews the algorithm before authorizing
-automation, and reviews the coverage before accepting manual scenarios. This is
-not ceremony: an incorrect early interpretation otherwise spreads through every
-later artifact.
+automation, approves the full manual test case before it is saved, and reviews
+the factual report before any publication. This is not ceremony: an incorrect
+early interpretation otherwise spreads through every later artifact.
 
 The project retains knowledge between tasks through a private route atlas. The
 agent searches proven routes before route discovery, then synchronizes the map
@@ -55,6 +58,8 @@ control of the environment, the final test scope, and the conclusion.
 
 - Reuse project-native tests and approved routes before creating new machinery.
 - Test the whole changed behavioral scope, not an arbitrary smoke subset.
+- Preserve the distinction between a test script, an automated result report,
+  factual evidence, a manual test case, and a final task report.
 - Do not turn an unavailable environment, missing access, or unexecuted manual
   scenario into a pass.
 - Do not put private work artifacts into public examples.

@@ -18,13 +18,14 @@ ticket straight to a few happy-path checks.
 
 | Resource | What it gives you |
 | --- | --- |
-| [`SKILL.md`](skills/ai-assisted-qa/SKILL.md) | The agent workflow: analysis, verification algorithm, automated evidence, and manual exploration. |
-| [Artifact contract](skills/ai-assisted-qa/references/artifact-contract.md) | Required structure and quality criteria for each QA artifact. |
+| [`SKILL.md`](skills/ai-assisted-qa/SKILL.md) | The full agent contract: analysis, algorithm, executable automated evidence, approved manual test case, and final report. |
+| [Artifact contract](skills/ai-assisted-qa/references/artifact-contract.md) | Detailed required structure, naming, traceability, and quality criteria for every artifact. |
 | [Risk patterns](skills/ai-assisted-qa/references/risk-patterns.md) | Reusable reasoning for UI state, API contracts, data migrations, and asynchronous propagation. |
-| [Staged session prompts](skills/ai-assisted-qa/references/staged-session-prompts.md) | Four separate terminal prompts that keep the engineer in control between QA stages. |
+| [Controlled session templates](skills/ai-assisted-qa/references/staged-session-prompts.md) | Five complete terminal messages: analysis, algorithm, automated checks, manual test case, and report. |
+| [Final report template](skills/ai-assisted-qa/references/final-report-template.md) | Step-for-step report form with preflight rules that prevent compressed or invented outcomes. |
 | [Route memory protocol](skills/ai-assisted-qa/references/route-memory.md) | A `compare -> reuse/update/add` method for reusing proven QA routes. |
 | [Eleven principles](skills/ai-assisted-qa/references/eleven-principles.md) | The non-negotiable operating rules distilled from a mature QA workflow. |
-| [Project rule snippet](skills/ai-assisted-qa/assets/project-agent-rules.md) | A short rule block to add to a project's local agent instructions. |
+| [Project `AGENTS.md` rule set](skills/ai-assisted-qa/assets/project-agent-rules.md) | A complete local rule set to merge into a project's agent instructions. |
 | [Complete synthetic example](examples/allocation-state-propagation/) | Six detailed artifacts, from task brief to final report, with no real system data. |
 
 ## Adopt the Workflow
@@ -43,22 +44,24 @@ agent's operating instructions. The workflow is tool-agnostic.
 
 ### 2. Add the Project Rule
 
-Copy the contents of
+Merge the contents of
 [`project-agent-rules.md`](skills/ai-assisted-qa/assets/project-agent-rules.md)
-into your project's local agent instruction file. This tells the agent where to
-save artifacts and prevents it from treating a partial check as complete.
+into your project's local `AGENTS.md`, then configure only the local artifact
+root, permitted contours, and validators. This installs the full artifact and
+reporting contract, not a generic reminder.
 
 ### 3. Run the Task in Controlled Stages
 
 Do not ask the agent to analyze, test, and report everything in one turn. Use
-the four [staged session prompts](skills/ai-assisted-qa/references/staged-session-prompts.md)
+the five [controlled session templates](skills/ai-assisted-qa/references/staged-session-prompts.md)
 as separate Codex terminal messages:
 
 ```text
-1. Analysis -> inspect the agent's understanding and scope.
-2. Algorithm -> inspect the route, evidence, and stop conditions.
-3. Automated evidence -> authorize only the checks you accept.
-4. Manual test case -> review human scenarios before execution.
+1. Analysis -> inspect the complete task understanding and changed-risk scope.
+2. Algorithm -> inspect reproducible routes, evidence, stop conditions, and handoffs.
+3. Automated checks -> inspect executable checks, factual results, and evidence.
+4. Manual test case -> approve complete human steps before they are saved.
+5. Final report -> verify that actual evidence and approved steps are represented 1:1.
 ```
 
 Each phase uses the approved artifact from the prior phase as its source of
@@ -80,23 +83,25 @@ The agent should create this chain:
 qa/<task-id>/
   analysis.md             Scope, requirements, dependencies, risks, blockers
   algorithm.md            Verification sequence, evidence, stop conditions
-  automated-checks.md     Reusable checks and actual execution evidence
-  manual-test-cases.md    Exploratory and human-only scenarios
-  report.md               Requirement/DoD traceability and factual outcome
+  automated-checks-report.md  Automated scope, actual results, and evidence
+  autotest.<ext>              Rerunnable check, only when one exists
+  evidence-*.zip              Factual output package, only when needed
+  manual-test-cases.md        Approved human scenarios
+  report.md                   Step-by-step factual outcome and DoD traceability
 ```
 
-## The Four-Stage Method
+## The Five-Artifact Method
 
-1. **Analysis**: establish the source of truth, full scope, changed behavior,
-   dependencies, regression zones, and unresolved questions.
-2. **Algorithm**: turn the analysis into an ordered, evidence-backed path. It
-   states which layer is checked, by which tool, and when to stop.
-3. **Automated evidence**: reuse existing unit, contract, API, data, or browser
-   checks where they fit. Run only approved, relevant checks and preserve the
-   factual result.
-4. **Manual exploration**: investigate what automation cannot establish:
-   usability, visual quality, unusual paths, timing, external dependencies, and
-   product judgment.
+1. **Analysis**: establish sources of truth, delivery status, full changed
+   behavior, dependencies, risks, regression zones, and unresolved questions.
+2. **Algorithm**: turn the analysis into an ordered, reproducible route with
+   read-only preflight, entry points, evidence, responsibilities, and stops.
+3. **Automated checks**: create and run risk-justified, repeatable tests and
+   preserve their factual report and evidence. A test file is not the report.
+4. **Manual test case**: prepare one complete DoD-covering human scenario with
+   explicit entry points, actions, and observable expected results.
+5. **Final report**: copy the approved manual steps into the factual execution
+   record, add automated proof, artifacts, immutable DoD, and remaining risk.
 
 The final report does not replace a release decision. It makes the evidence,
 remaining uncertainty, and manual judgment visible to the person making one.
@@ -132,9 +137,11 @@ that link. It also prevents two common failures:
 - claiming that an automated green run covers UI, data propagation, or user
   behavior that it did not observe.
 
-See the [synthetic example](examples/allocation-state-propagation/) for the
-expected depth and artifact flow. It intentionally demonstrates a detailed
-cross-layer case, not a short generic checklist.
+See the [synthetic example](examples/allocation-state-propagation/) and the
+[complete session templates](skills/ai-assisted-qa/references/staged-session-prompts.md)
+for the expected depth and artifact flow. The templates are intentionally
+operational: another project can take them, set local paths and tools, and use
+the same staged control without inheriting private project data.
 
 ## Safety and Publication
 
