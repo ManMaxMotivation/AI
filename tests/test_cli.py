@@ -24,3 +24,23 @@ def test_validate_writes_evidence(tmp_path: Path) -> None:
 
     assert exit_code == 0
     assert '"passed": true' in evidence.read_text(encoding="utf-8")
+
+
+def test_init_prepare_verify_and_report_form_a_usable_case(tmp_path: Path) -> None:
+    case_dir = tmp_path / "reservation-case"
+
+    assert main(["init", "--template", "reservation-state-propagation", "--output", str(case_dir)]) == 0
+    assert not (case_dir / "demo-manual-results.yaml").exists()
+    assert main(["prepare", "--case", str(case_dir)]) == 0
+    assert main(["verify", "--case", str(case_dir)]) == 0
+    assert main(["report", "--case", str(case_dir)]) == 1
+    assert "INCOMPLETE OR FAILED" in (case_dir / "artifacts" / "qa-report.md").read_text(encoding="utf-8")
+
+
+def test_full_demo_case_produces_a_traceable_final_report(tmp_path: Path) -> None:
+    case_dir = tmp_path / "demo"
+
+    assert main(["demo", "--case", "reservation-state-propagation", "--output", str(case_dir)]) == 0
+    report = (case_dir / "artifacts" / "qa-report.md").read_text(encoding="utf-8")
+    assert "SYNTHETIC COMPLETED EXAMPLE - NOT A RELEASE DECISION" in report
+    assert "R-004" in report

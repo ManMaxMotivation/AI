@@ -1,0 +1,18 @@
+# Replace every synthetic result with observations from your approved environment.
+checks:
+  - id: MANUAL-001
+    status: not_run
+    evidence: ""
+    notes: ""
+  - id: MANUAL-002
+    status: not_run
+    evidence: ""
+    notes: ""
+  - id: MANUAL-003
+    status: not_run
+    evidence: ""
+    notes: ""
+  - id: MANUAL-004
+    status: not_run
+    evidence: ""
+    notes: ""

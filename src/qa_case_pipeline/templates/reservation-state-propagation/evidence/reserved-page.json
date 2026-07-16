@@ -1,0 +1,9 @@
+{
+  "http_status": 200,
+  "reservation": {"state": "reserved"},
+  "ui": {
+    "state_label": "Reserved",
+    "desktop_action": {"enabled": false},
+    "mobile_action": {"enabled": false}
+  }
+}

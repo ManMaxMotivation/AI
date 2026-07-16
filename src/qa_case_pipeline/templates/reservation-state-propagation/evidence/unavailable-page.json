@@ -1,0 +1,9 @@
+{
+  "http_status": 200,
+  "reservation": {"state": "unavailable"},
+  "ui": {
+    "state_label": "Expected",
+    "desktop_action": {"enabled": false},
+    "mobile_action": {"enabled": false}
+  }
+}

@@ -1,0 +1,18 @@
+# Synthetic completed record used only by `qa-case-pipeline demo`.
+checks:
+  - id: MANUAL-001
+    status: passed
+    evidence: "Synthetic desktop review record"
+    notes: "Reserved and unavailable labels are distinguishable."
+  - id: MANUAL-002
+    status: passed
+    evidence: "Synthetic keyboard and mobile review record"
+    notes: "No disabled control exposes a checkout path."
+  - id: MANUAL-003
+    status: passed
+    evidence: "Synthetic available-item journey record"
+    notes: "Existing checkout path is preserved."
+  - id: MANUAL-004
+    status: passed
+    evidence: "Synthetic propagation-window review record"
+    notes: "The stale page snapshot cannot offer an active checkout action."

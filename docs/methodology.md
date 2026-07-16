@@ -16,8 +16,9 @@ contracts, or user-visible behavior.
 
 Start with a concise, sanitized brief: the change, acceptance criteria, known
 risks, and constraints. Identify the behavioral surface and regression zones.
-The output is not a claim that every risk is covered; it is a reviewable list
-of what must be considered.
+Then assign stable requirement IDs in `verification.yaml`. The output is not a
+claim that every risk is covered; it is a reviewable list of what must be
+considered.
 
 ### 2. Algorithm
 
@@ -28,11 +29,12 @@ state, URL representation, and an independent control flow.
 
 ### 3. Automated Checks
 
-Automate deterministic, high-signal assertions where they are appropriate.
-The included reference checks only read local fixture files. In a real project,
-the corresponding layer may be unit, contract, API, integration, browser, or
-data validation. Automation produces evidence; it is not a blanket release
-approval.
+Automate deterministic, high-signal assertions where they are appropriate. A
+team exports relevant facts from its approved unit, contract, API, integration,
+browser, or data tooling as local JSON. `qa-case-pipeline verify` evaluates
+declarative JSON-Pointer assertions against those files and writes a report
+mapped to requirement IDs. Automation produces evidence; it is not a blanket
+release approval.
 
 ### 4. Manual Exploratory Checks
 
@@ -67,7 +69,9 @@ code, or internal trackers in a public brief or generated artifact.
 
 ## Current Demonstrations
 
-`ui-state-persistence` checks whether selected filter values survive navigation
-and remain isolated from a control catalog. `schema-legacy-compat` checks safe
-handling of null legacy keys, an allow-list policy, and composite-key
-uniqueness. Both are deliberately local and synthetic.
+`reservation-state-propagation` is the complete primary template. It checks a
+state contract across a page, desktop/mobile actions, a comparison surface, and
+a transition window where two systems are temporarily inconsistent.
+`ui-state-persistence` and `schema-legacy-compat` remain small synthetic
+reference fixtures for focused checks. All examples are deliberately local and
+synthetic.

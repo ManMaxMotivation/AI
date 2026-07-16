@@ -1,0 +1,16 @@
+title: Keep an item page safe while reservation state propagates
+summary: A customer can reserve an inventory item. The page, related comparison view, and call to action must reflect available, reserved, and unavailable states without exposing a stale path to checkout.
+change: Display reservation state, disable purchase actions for unavailable inventory, and preserve the available-item flow.
+acceptance_criteria:
+  - Reserved and unavailable items remain viewable and clearly communicate their state.
+  - A disabled action cannot navigate to checkout from desktop, mobile, or comparison views.
+  - An available item keeps the existing purchase path.
+  - The transition period between reservation acceptance and page-data refresh does not expose an actionable stale checkout path.
+known_risks:
+  - Backend and static-page state can refresh at different times.
+  - One UI surface can retain an active link while another correctly disables it.
+  - Product terminology can differ from the stored technical state.
+constraints:
+  - All evidence is local JSON exported from approved tooling.
+  - This template contains synthetic values only; replace them with sanitized evidence for a real case.
+case_type: reservation_state_propagation
