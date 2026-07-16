@@ -1,25 +1,26 @@
 # AI
 
-Открытый проект `ManMaxMotivation` для разработки AI-инструментов и экспериментов.
+An open research project by `ManMaxMotivation` for building AI tools and
+experiments.
 
-Конкретная архитектура и состав компонентов будут определены по мере развития
-проекта. Значимые изменения сначала согласуются, затем проходят проверку,
-коммитятся и публикуются в GitHub.
+The product direction and architecture will be defined through validated
+research and useful implementation work. Significant changes are agreed,
+tested, committed, and published to GitHub.
 
-## Локальная конфигурация
+## Local Configuration
 
-Создайте `.env` на основе `.env.example`, когда приложению понадобятся
-переменные окружения. Файл `.env` не отслеживается Git и не должен содержать
-данные, которые можно публиковать.
+Create `.env` from `.env.example` when the project needs environment
+variables. `.env` is not tracked by Git and must never contain information
+intended for publication.
 
-Доступ к GitHub обеспечивается GitHub CLI (`gh`); токены не хранятся в этом
-репозитории.
+GitHub access is provided by the GitHub CLI (`gh`). Tokens are not stored in
+this repository.
 
-## Работа с Git
+## Git Workflow
 
-Основная ветка: `main`. Перед началом согласованной задачи актуализируйте
-локальную ветку через `git fetch origin` и `git pull --ff-only`, если рабочая
-директория чистая. После завершения и проверок изменения публикуются в
-`origin/main`; состояние удаленного репозитория проверяется отдельно.
+The default branch is `main`. Before starting an agreed task, update the local
+branch with `git fetch origin` and, when the working tree is clean,
+`git pull --ff-only`. After implementation and relevant checks, publish the
+completed change to `origin/main` and verify the remote state.
 
-Подробные правила для автоматизированной работы приведены в `AGENTS.md`.
+Detailed automation and repository rules are maintained in `AGENTS.md`.
