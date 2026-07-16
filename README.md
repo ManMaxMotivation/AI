@@ -21,6 +21,9 @@ ticket straight to a few happy-path checks.
 | [`SKILL.md`](skills/ai-assisted-qa/SKILL.md) | The agent workflow: analysis, verification algorithm, automated evidence, and manual exploration. |
 | [Artifact contract](skills/ai-assisted-qa/references/artifact-contract.md) | Required structure and quality criteria for each QA artifact. |
 | [Risk patterns](skills/ai-assisted-qa/references/risk-patterns.md) | Reusable reasoning for UI state, API contracts, data migrations, and asynchronous propagation. |
+| [Staged session prompts](skills/ai-assisted-qa/references/staged-session-prompts.md) | Four separate terminal prompts that keep the engineer in control between QA stages. |
+| [Route memory protocol](skills/ai-assisted-qa/references/route-memory.md) | A `compare -> reuse/update/add` method for reusing proven QA routes. |
+| [Eleven principles](skills/ai-assisted-qa/references/eleven-principles.md) | The non-negotiable operating rules distilled from a mature QA workflow. |
 | [Project rule snippet](skills/ai-assisted-qa/assets/project-agent-rules.md) | A short rule block to add to a project's local agent instructions. |
 | [Complete synthetic example](examples/reservation-state-propagation/) | A full chain from task brief to final report, with no real system data. |
 
@@ -45,7 +48,23 @@ Copy the contents of
 into your project's local agent instruction file. This tells the agent where to
 save artifacts and prevents it from treating a partial check as complete.
 
-### 3. Give the Agent a Real Task
+### 3. Run the Task in Controlled Stages
+
+Do not ask the agent to analyze, test, and report everything in one turn. Use
+the four [staged session prompts](skills/ai-assisted-qa/references/staged-session-prompts.md)
+as separate Codex terminal messages:
+
+```text
+1. Analysis -> inspect the agent's understanding and scope.
+2. Algorithm -> inspect the route, evidence, and stop conditions.
+3. Automated evidence -> authorize only the checks you accept.
+4. Manual test case -> review human scenarios before execution.
+```
+
+Each phase uses the approved artifact from the prior phase as its source of
+truth. The agent must not move ahead on its own.
+
+### 4. Give the Agent a Real Task
 
 Use a direct request such as:
 
@@ -81,6 +100,26 @@ qa/<task-id>/
 
 The final report does not replace a release decision. It makes the evidence,
 remaining uncertainty, and manual judgment visible to the person making one.
+
+## Route Memory: Faster Without Losing Coverage
+
+Mature QA teams do not rediscover every browser path, data chain, or diagnostic
+sequence from scratch. Keep a private route atlas inside the target project.
+Before building a new algorithm, the agent searches for a matching proven route
+and reuses it when it remains valid. At the end of the algorithm phase it
+synchronizes the atlas with `compare -> reuse/update/add`.
+
+This preserves verified knowledge across related tasks while keeping one-off
+incidents and process barriers out of the route map. The full protocol and a
+generic record format are in
+[route-memory.md](skills/ai-assisted-qa/references/route-memory.md).
+
+## The Eleven Principles
+
+The playbook's core discipline is summarized in
+[Eleven Principles of AI-Assisted QA](skills/ai-assisted-qa/references/eleven-principles.md).
+They cover phased control, source authority, risk-based coverage, route reuse,
+evidence integrity, stopping rules, and publication safety.
 
 ## Why This Is Different From a Generic Test Checklist
 

@@ -10,8 +10,30 @@ cross-service change. Keep the task's artifacts in its own directory.
 qa/<task-id>/
 ```
 
-Install the skill, add the project rule, and ask the agent to create analysis
-and algorithm artifacts before running tests.
+Install the skill, add the project rule, and use the staged-session prompts.
+Run analysis first; inspect it before asking for the algorithm. Run automated
+evidence and the manual test case only in later, explicit sessions.
+
+## Keep Human Gates Between Stages
+
+The engineer controls the sequence:
+
+1. Ask only for analysis and review what the agent understood.
+2. Ask only for the algorithm and review tools, routes, and stop conditions.
+3. Authorize automated checks only after the route is accepted.
+4. Ask for the manual test case after automated scope is known.
+
+This prevents an early misunderstanding from being copied into every later
+artifact. Use the copyable prompts in
+[`staged-session-prompts.md`](../skills/ai-assisted-qa/references/staged-session-prompts.md).
+
+## Create Private Route Memory
+
+Add a private `qa/route-atlas.md` to the target project. Before the algorithm
+phase, the agent searches it and related approved algorithms. When it proves a
+new reusable route, it synchronizes the atlas as `compare -> reuse/update/add`.
+Do not store volatile data, credentials, private URLs, or one-off root causes in
+the atlas. See the [route-memory protocol](../skills/ai-assisted-qa/references/route-memory.md).
 
 ## Review the Analysis Before Execution
 

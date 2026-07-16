@@ -8,6 +8,25 @@ description: "Guide a QA agent through a four-stage workflow for complex product
 Create a factual, reviewable QA artifact chain. Do not jump directly from a
 task description to test execution or a verdict.
 
+## Human-Gated Session Mode
+
+Use staged sessions by default. Run only the phase the user explicitly requests;
+do not continue to the next phase because a prior artifact looks complete. This
+lets the engineer inspect the agent's understanding and correct it before later
+work depends on it.
+
+1. **Analysis**: establish scope and risk.
+2. **Algorithm**: agree the reproducible verification route.
+3. **Automated evidence**: prepare and, when authorized, run the relevant
+   checks.
+4. **Manual test case**: prepare human scenarios from the approved prior work.
+
+Show the complete phase artifact in chat first. Save only the same approved
+content, without silent rewriting. Create a final report only after execution
+evidence exists and the user requests reporting.
+
+Use `references/staged-session-prompts.md` for copyable phase prompts.
+
 ## Required Inputs
 
 Collect the available task description, acceptance criteria or DoD, changed
@@ -17,6 +36,11 @@ environment state, execution results, or access.
 
 Before reading or publishing material, apply the privacy rules in
 `references/publication-safety.md`.
+
+If the project has route memory, read it before route discovery. Use the
+`references/route-memory.md` protocol: find a proven matching route, compare it
+with the current task, reuse it where valid, and update or add it only after a
+new route is proven.
 
 ## Workflow
 
@@ -48,6 +72,11 @@ preconditions to observable outcomes. For every step state:
 Use `references/risk-patterns.md` when the task involves state propagation, UI
 state, contracts, legacy data, asynchronous processing, or cross-system flows.
 
+After the task route is built, synchronize route memory using
+`compare -> reuse/update/add`. Keep one-off root causes in the task artifact and
+repeatable process barriers in a separate barrier record; neither belongs in a
+reusable route map by default.
+
 ### 3. Produce Automated Evidence
 
 Create `automated-checks.md`. Prefer the project's existing test runner and
@@ -71,7 +100,7 @@ journeys not faithfully reproducible in the available automation.
 Record actual observations only after they occur. Mark not-run, blocked, and
 failed scenarios plainly.
 
-### 5. Report Traceability
+### Report Traceability
 
 Create `report.md` from the completed artifacts. Map each requirement or DoD
 item to automated evidence, manual evidence, and its factual status. State
@@ -91,4 +120,5 @@ Before finalizing, verify that:
   internal identifiers, or copied proprietary content.
 
 Use `references/artifact-contract.md` for mandatory artifact sections and
-`assets/project-agent-rules.md` when a project needs a concise local rule.
+`assets/project-agent-rules.md` when a project needs a concise local rule. Read
+`references/eleven-principles.md` before finalizing complex work.

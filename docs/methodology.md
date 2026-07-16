@@ -28,6 +28,19 @@ The playbook makes four stages explicit.
 The report connects each requirement or DoD point to these stages. It is a
 decision record, not a substitute for product or release ownership.
 
+## Human Control Is Part of the Method
+
+The stages are separate sessions by design. The engineer reviews the analysis
+before approving the algorithm, reviews the algorithm before authorizing
+automation, and reviews the coverage before accepting manual scenarios. This is
+not ceremony: an incorrect early interpretation otherwise spreads through every
+later artifact.
+
+The project retains knowledge between tasks through a private route atlas. The
+agent searches proven routes before route discovery, then synchronizes the map
+as `compare -> reuse/update/add` after it proves a new or improved route. This
+reduces repeated investigation without treating old paths as unquestionable.
+
 ## Why AI Helps
 
 An AI agent is useful when it follows a fixed reasoning discipline: reading
