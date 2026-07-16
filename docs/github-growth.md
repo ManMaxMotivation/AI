@@ -16,7 +16,7 @@ GitHub может менять условия achievements. Единственн
 | --- | --- | --- | --- |
 | Pull Shark | verified | Merged pull requests | Видна в профиле 2026-07-16 |
 | Quickdraw | verified | Быстро закрытые issue или PR | Видна в профиле 2026-07-16 |
-| Starstruck: AI | in progress | Полезный открытый AI-инструмент, документация, тесты, release и релевантное органичное распространение | Репозиторий: https://github.com/ManMaxMotivation/AI; стартовая проверка: 1 star, 2026-07-16 |
+| Starstruck: AI | in progress | Полезный открытый AI-инструмент, документация, тесты, release и релевантное органичное распространение | v0.1.0: https://github.com/ManMaxMotivation/AI/releases/tag/v0.1.0; 5 stars, 2026-07-16; ожидается подтверждение achievement в публичном профиле |
 | Pair Extraordinaire | queued | Настоящая парная работа с другим GitHub-пользователем, корректный `Co-authored-by` и merged PR | Добавить URL merged PR, затем проверить профиль |
 | Galaxy Brain | queued | Полезный ответ в существующей Discussion по AI, QA или developer-tools, отмеченный автором как accepted | Добавить URL Discussion, затем проверить профиль |
 | YOLO | excluded | Не выполнять merge без review ради значка | Противоречит правилам качества |

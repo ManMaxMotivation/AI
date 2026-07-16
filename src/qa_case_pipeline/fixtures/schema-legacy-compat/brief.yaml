@@ -1,0 +1,15 @@
+title: Keep legacy records safe during a composite-key migration
+summary: A data service begins using a structured key while historical records can still contain no key. Visibility rules must remain explicit and the new composite keys must be unique.
+change: Introduce a composite source key without breaking legacy records that have a null key.
+acceptance_criteria:
+  - A legacy record with a null key is handled without an exception.
+  - Visibility follows the configured source-type policy.
+  - New composite keys are unique.
+  - Unlisted source types are not visible by default.
+known_risks:
+  - Accessing a missing nested key can interrupt a batch.
+  - Colliding composite keys can merge unrelated source records.
+constraints:
+  - This is a synthetic schema-only example.
+  - No external service, database, or production dataset is contacted.
+case_type: schema_legacy_compat

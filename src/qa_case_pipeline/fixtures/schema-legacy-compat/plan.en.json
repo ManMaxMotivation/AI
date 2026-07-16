@@ -1,0 +1,71 @@
+{
+  "analysis": {
+    "summary": "The migration changes a nullable legacy field into a structured composite key. The critical behavior is safe handling of history, explicit visibility policy, and uniqueness of new identities.",
+    "scope": [
+      "Null legacy key handling",
+      "Source-type visibility policy",
+      "Composite-key uniqueness",
+      "Default behavior for unknown source types"
+    ],
+    "risks": [
+      {
+        "risk": "Nested-key access fails on a historical record.",
+        "mitigation": "Treat an absent key as an explicit legacy branch."
+      },
+      {
+        "risk": "Two source records receive the same composite identity.",
+        "mitigation": "Compare canonical serialized keys for every new record."
+      }
+    ]
+  },
+  "algorithm": {
+    "steps": [
+      "Load a legacy record with no structured key.",
+      "Evaluate visibility for null, allowed, and unlisted source types.",
+      "Serialize every new composite key in a canonical order.",
+      "Assert that the serialized keys are unique."
+    ],
+    "evidence": [
+      "Safe legacy-record result.",
+      "Visibility result for each source type.",
+      "Canonical composite-key values and uniqueness result."
+    ]
+  },
+  "automated_checks": [
+    {
+      "id": "AUTO-001",
+      "purpose": "Verify that a null legacy key is handled safely.",
+      "expected": "The legacy record is visible and no exception is raised."
+    },
+    {
+      "id": "AUTO-002",
+      "purpose": "Verify the source-type visibility policy.",
+      "expected": "Only configured source types are visible; an unlisted type is hidden."
+    },
+    {
+      "id": "AUTO-003",
+      "purpose": "Verify uniqueness of new composite identities.",
+      "expected": "Every new record has a distinct canonical key."
+    }
+  ],
+  "manual_checks": [
+    {
+      "id": "MANUAL-001",
+      "purpose": "Inspect a migration sample with partially populated historical records.",
+      "expected": "Records are classified or reported explicitly; none disappear silently."
+    },
+    {
+      "id": "MANUAL-002",
+      "purpose": "Explore source types and nested-key shapes outside the allow-list.",
+      "expected": "The service applies a predictable default and gives useful diagnostics where appropriate."
+    }
+  ],
+  "assumptions": [
+    "A null key represents a known legacy state.",
+    "The configured source-type allow-list is owned by the product team."
+  ],
+  "limitations": [
+    "Reference checks exercise local synthetic records and do not validate a database migration or service deployment.",
+    "Manual investigation remains necessary for data volume, observability, and rollback behavior."
+  ]
+}

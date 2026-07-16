@@ -1,0 +1,5 @@
+{
+  "preserved_filters": ["monthly_payment", "term_months", "payment_type"],
+  "expected_catalog": "pre-owned",
+  "control_catalog": "new"
+}

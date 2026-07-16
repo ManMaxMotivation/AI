@@ -1,0 +1,71 @@
+{
+  "analysis": {
+    "summary": "The change crosses estimator state, catalog routing, URL serialization, and independent catalog state. A passing navigation must preserve the intended values rather than merely open a valid page.",
+    "scope": [
+      "Selected catalog identity",
+      "Supported estimator filters",
+      "Destination URL query values",
+      "Isolation of a second catalog"
+    ],
+    "risks": [
+      {
+        "risk": "One filter is silently reset while the catalog still opens.",
+        "mitigation": "Compare every supported filter before and after navigation."
+      },
+      {
+        "risk": "A shared query value leaks between catalogs.",
+        "mitigation": "Use an independent control catalog with different values."
+      }
+    ]
+  },
+  "algorithm": {
+    "steps": [
+      "Prepare a selected catalog and a complete set of estimator filters.",
+      "Navigate from the estimator to the selected catalog.",
+      "Compare the selected catalog, each filter, and URL query values with the source state.",
+      "Repeat with an independent control catalog to detect state leakage."
+    ],
+    "evidence": [
+      "Serialized source and destination state.",
+      "Serialized URL query values.",
+      "Reference-check JSON with individual pass or fail results."
+    ]
+  },
+  "automated_checks": [
+    {
+      "id": "AUTO-001",
+      "purpose": "Verify that the requested catalog remains selected after navigation.",
+      "expected": "The destination catalog is pre-owned."
+    },
+    {
+      "id": "AUTO-002",
+      "purpose": "Verify that all configured filters and URL query values match the source state.",
+      "expected": "Monthly payment, term, and payment type remain unchanged in state and URL."
+    },
+    {
+      "id": "AUTO-003",
+      "purpose": "Verify that another catalog retains its own state.",
+      "expected": "The control catalog remains new with its original values."
+    }
+  ],
+  "manual_checks": [
+    {
+      "id": "MANUAL-001",
+      "purpose": "Explore browser history, refresh, and direct URL entry with valid filter combinations.",
+      "expected": "Visible controls and results agree with the URL and no value changes unexpectedly."
+    },
+    {
+      "id": "MANUAL-002",
+      "purpose": "Try boundary and unsupported filter combinations.",
+      "expected": "The interface gives an understandable result and does not mix catalog state."
+    }
+  ],
+  "assumptions": [
+    "All supported filters have a stable URL representation.",
+    "The destination catalog accepts the same filter domain as the estimator."
+  ],
+  "limitations": [
+    "Reference checks validate synthetic serialized state only; they do not replace a browser session or production validation.",
+    "Manual exploratory checks remain required for rendering, accessibility, and unexpected user paths."
+  ]
+}

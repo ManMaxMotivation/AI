@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "qa-case-pipeline"
+version = "0.1.0"
+description = "A local AI-assisted pipeline for structured QA case planning."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { file = "LICENSE" }
+dependencies = [
+  "jsonschema>=4.23.0",
+  "PyYAML>=6.0.2",
+]
+
+[project.scripts]
+qa-case-pipeline = "qa_case_pipeline.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8.3.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/qa_case_pipeline"]
