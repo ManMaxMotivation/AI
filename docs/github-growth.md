@@ -1,56 +1,42 @@
-# Рост GitHub-профиля
+# GitHub Growth
 
-## Принцип
+## Principle
 
-Цель этого реестра - сделать профиль `ManMaxMotivation` убедительной витриной
-реальной инженерной работы. Achievements учитываются как следствие полезных
-вкладов, а не как самостоятельная причина создавать активность.
+The goal of this register is to make the `ManMaxMotivation` profile a credible
+record of real engineering work. GitHub achievements are a side effect of useful
+contributions, not a reason to manufacture activity.
 
-GitHub может менять условия achievements. Единственный критерий закрытия -
-значок виден в публичном профиле. Для каждого события сохраняется публичная
-ссылка на его источник.
+GitHub can change achievement criteria. An achievement is considered complete
+only after it appears on the public profile. Keep a public source link for each
+event.
 
-## Реестр
+## Register
 
-| Цель | Статус | Допустимый путь | Подтверждение |
+| Goal | Status | Legitimate route | Evidence |
 | --- | --- | --- | --- |
-| Pull Shark | verified | Merged pull requests | Видна в профиле 2026-07-16 |
-| Quickdraw | verified | Быстро закрытые issue или PR | Видна в профиле 2026-07-16 |
-| Starstruck: AI | in progress | Полезный открытый AI-инструмент, документация, тесты и релевантное органичное распространение | Публичный рабочий контур `QA Case Pipeline` в репозитории: https://github.com/ManMaxMotivation/AI; 5 stars, 2026-07-16; ожидается подтверждение achievement в публичном профиле |
-| Pair Extraordinaire | queued | Настоящая парная работа с другим GitHub-пользователем, корректный `Co-authored-by` и merged PR | Добавить URL merged PR, затем проверить профиль |
-| Galaxy Brain | queued | Полезный ответ в существующей Discussion по AI, QA или developer-tools, отмеченный автором как accepted | Добавить URL Discussion, затем проверить профиль |
-| YOLO | excluded | Не выполнять merge без review ради значка | Противоречит правилам качества |
-| Public Sponsor и платные badges | excluded | Не планировать расходы ради значка | Вне утвержденной стратегии |
-| Исторические или недоступные achievements | excluded | Не имитировать старые события | Не являются достижимой целью |
+| Pull Shark | verified | Merged pull requests | Visible on the profile, 2026-07-16 |
+| Quickdraw | verified | Quickly closed issues or pull requests | Visible on the profile, 2026-07-16 |
+| Starstruck: AI | in progress | Useful open AI-assisted QA playbook, skill, documentation, and relevant organic sharing | Public playbook and reusable skill: https://github.com/ManMaxMotivation/AI; 5 stars, 2026-07-16; awaiting public-profile confirmation |
+| Pair Extraordinaire | queued | Genuine collaboration with another GitHub user, correct `Co-authored-by`, and merged pull request | Add merged pull request URL, then check the profile |
+| Galaxy Brain | queued | Useful answer in an existing AI, QA, or developer-tools Discussion, marked accepted by its author | Add Discussion URL, then check the profile |
+| YOLO | excluded | Do not merge without review for a badge | Conflicts with quality rules |
+| Public Sponsor and paid badges | excluded | Do not spend money for badges | Outside the strategy |
+| Historical or unavailable achievements | excluded | Do not imitate old events | Not a valid target |
 
-## Рабочий цикл
+## Working Cycle
 
-1. Перед началом задачи сверить этот реестр и выбрать только одну текущую цель.
-2. Сделать полезную работу с обычными требованиями к качеству, review и
-   безопасности. Внешние contributions допустимы лишь в релевантных
-   open-source проектах и после согласования задачи.
-3. После публикации внести в таблицу ссылку, дату и краткое описание
-   фактического вклада. Не считать действие закрытым по предположению.
-4. Проверить публичный профиль GitHub. При появлении значка изменить статус на
-   `verified`, зафиксировать дату и перевести следующую незакрытую цель в
-   `in progress`.
+1. Before starting work, select only one current goal from this register.
+2. Make useful work with normal quality, review, and security requirements.
+   External contributions are appropriate only for relevant open-source work.
+3. After publication, add a public link, date, and factual description. Do not
+   mark a goal complete by assumption.
+4. Check the public GitHub profile. When the badge appears, change the status
+   to `verified` and move the next legitimate goal to `in progress`.
 
-## Правила Starstruck для AI
+## Rules for Starstruck: AI
 
-- Сначала подготовить минимальный полезный релиз: ясное назначение, локальный
-  запуск, пример использования, тест или проверяемый сценарий и заметки об
-  ограничениях.
-- Рассказывать о проекте только в сообществах, где он отвечает на реальную
-  задачу. Не покупать звезды, не участвовать в star-for-star и не рассылать
-  нерелевантные просьбы.
-- Собирать обратную связь через issues и улучшать продукт по подтвержденным
-  потребностям. Количество звезд не меняет критерии приема кода.
-
-## Privacy-review профиля
-
-- Публичный profile README ведется на английском.
-- Gmail в нем не публикуется. Перед добавлением любой ссылки проверять ее
-  актуальность и уместность для публичного контакта.
-- В закрепленных репозиториях оставлять только работы с понятным README,
-  рабочим содержанием и ценностью для посетителя. `AI` добавлять после первого
-  содержательного релиза.
+- Publish useful, understandable work with a clear purpose and honest limits.
+- Share it only where it directly answers a real problem. Do not buy stars,
+  exchange stars, or send irrelevant requests.
+- Collect feedback through issues or discussions and improve the project from
+  confirmed needs. Star count never changes code acceptance criteria.

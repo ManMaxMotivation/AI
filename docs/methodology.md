@@ -1,77 +1,47 @@
-# Four-Stage QA Methodology
+# Methodology
 
-## Purpose
+## The Problem
 
-This repository demonstrates a repeatable way to make complex QA work easier
-to review, reproduce, and extend. It is inspired by real delivery practice,
-but all included data, scenarios, names, and artifacts are synthetic.
+Complex changes rarely fail in one isolated function. A requirement can cross a
+data contract, a transformation, a cache, several UI surfaces, an asynchronous
+job, and a user journey. A short test checklist often records the final action
+but loses the reasoning that connects these layers.
 
-The method is designed for changes where a narrow requirement can affect
-multiple layers, such as data compatibility, routing, state persistence, API
-contracts, or user-visible behavior.
+The result is familiar: a green narrow check, a missing regression path, and no
+clear explanation of what was not verified.
 
-## The Four Stages
+## The Method
 
-### 1. Analysis
+The playbook makes four stages explicit.
 
-Start with a concise, sanitized brief: the change, acceptance criteria, known
-risks, and constraints. Identify the behavioral surface and regression zones.
-Then assign stable requirement IDs in `verification.yaml`. The output is not a
-claim that every risk is covered; it is a reviewable list of what must be
-considered.
+1. **Analysis** establishes the actual scope before testing. It starts from
+   requirements and code, identifies sources of truth and changed-risk zones,
+   and records uncertainty instead of hiding it.
+2. **Algorithm** defines the test route before execution. It makes each step,
+   evidence source, tool, and stop condition reviewable.
+3. **Automated evidence** proves deterministic behavior at the appropriate
+   layer. It is not expanded into a broad matrix without a changed-risk reason.
+4. **Manual exploration** investigates the gaps automation cannot honestly
+   close: visual quality, accessibility, timing, user understanding, and
+   external or human handoffs.
 
-### 2. Algorithm
+The report connects each requirement or DoD point to these stages. It is a
+decision record, not a substitute for product or release ownership.
 
-Convert the analysis into a sequence of observable verification steps. State
-which facts should be compared and which evidence makes the result repeatable.
-For example, a state-persistence change needs the source state, destination
-state, URL representation, and an independent control flow.
+## Why AI Helps
 
-### 3. Automated Checks
+An AI agent is useful when it follows a fixed reasoning discipline: reading
+sources before proposing coverage, locating dependencies, separating fact from
+assumption, and maintaining traceability. It is not useful when it invents a
+generic test plan or announces success without evidence.
 
-Automate deterministic, high-signal assertions where they are appropriate. A
-team exports relevant facts from its approved unit, contract, API, integration,
-browser, or data tooling as local JSON. `qa-case-pipeline verify` evaluates
-declarative JSON-Pointer assertions against those files and writes a report
-mapped to requirement IDs. Automation produces evidence; it is not a blanket
-release approval.
+The skill in this repository provides the discipline. The engineer retains
+control of the environment, the final test scope, and the conclusion.
 
-### 4. Manual Exploratory Checks
+## Practical Boundaries
 
-Use human investigation for scenarios that need product context, visual
-inspection, accessibility judgment, unexpected paths, imperfect data, and
-cross-system behavior. Manual work begins from the automated evidence and
-deliberately looks beyond it.
-
-## How This Changes the Workflow
-
-Without a shared structure, a complex change can require repeated discussion,
-separate test notes, one-off checks, and later reconstruction of why a result
-was trusted. The four-stage package puts the reasoning and evidence next to
-each other, which makes review and follow-up more efficient.
-
-It does not remove the need for requirements, environments, observability, or
-manual QA. It makes assumptions, remaining risk, and the automation boundary
-visible instead of leaving them implicit.
-
-## AI Boundary
-
-Codex may help draft a plan from a sanitized brief, but its response is
-constrained by a JSON schema and must be reviewed. The integration:
-
-- uses a temporary working directory and read-only sandbox;
-- does not pass a target repository to Codex;
-- does not run a target project's commands;
-- keeps the final decision with the engineer or QA specialist.
-
-Never supply secrets, private URLs, personal data, customer data, proprietary
-code, or internal trackers in a public brief or generated artifact.
-
-## Current Demonstrations
-
-`reservation-state-propagation` is the complete primary template. It checks a
-state contract across a page, desktop/mobile actions, a comparison surface, and
-a transition window where two systems are temporarily inconsistent.
-`ui-state-persistence` and `schema-legacy-compat` remain small synthetic
-reference fixtures for focused checks. All examples are deliberately local and
-synthetic.
+- Reuse project-native tests and approved routes before creating new machinery.
+- Test the whole changed behavioral scope, not an arbitrary smoke subset.
+- Do not turn an unavailable environment, missing access, or unexecuted manual
+  scenario into a pass.
+- Do not put private work artifacts into public examples.

@@ -1,7 +1,0 @@
-{
-  "checkout_response": {"status": 410},
-  "page_snapshot": {
-    "reservation": {"state": "available"},
-    "ui": {"desktop_action": {"enabled": false}}
-  }
-}

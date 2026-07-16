@@ -1,152 +1,118 @@
-# QA Case Pipeline
+# AI-Assisted QA Playbook
 
-Turn a risky product change into a QA package that another engineer can review,
-run, and audit.
+This repository is a reusable QA workflow for people who use an AI agent while
+testing complex product changes. It is not a test runner and it does not impose
+a framework, language, or CI stack.
 
-`qa-case-pipeline` is for QA engineers, SDETs, developers, and delivery leads
-who need more than a checklist. It connects four things that are often kept
-apart: the requirement, the verification algorithm, repeatable evidence checks,
-and the manual exploration that automation cannot honestly replace.
+The practical value is a portable **skill**: install it in an agent-enabled
+project and the agent follows a disciplined sequence instead of jumping from a
+ticket straight to a few happy-path checks.
 
-It is useful when a small-looking change crosses several layers: a service
-state, a static or cached page, desktop and mobile controls, legacy data, or a
-transition window between systems.
+## Who This Is For
 
-## What You Get
+- QA engineers and SDETs who want repeatable analysis and reporting.
+- Developers who need to test a change across code, API, data, and UI layers.
+- QA leads who want an AI agent to produce consistent, reviewable artifacts.
 
-For one case directory, the tool produces:
+## What You Can Take Into Your Project
 
-| Stage | Artifact | Why it matters |
-| --- | --- | --- |
-| Analysis | `artifacts/analysis.md` | Scope, acceptance criteria, risks, constraints, and traceable requirements. |
-| Algorithm | `artifacts/algorithm.md` | The evidence collection and verification sequence. |
-| Automation | `artifacts/automated-report.md` | Reproducible pass/fail assertions over local JSON evidence. |
-| Manual QA | `artifacts/manual-checks.md` and `artifacts/qa-report.md` | Exploratory scenarios and an explicit record of what a person actually checked. |
+| Resource | What it gives you |
+| --- | --- |
+| [`SKILL.md`](skills/ai-assisted-qa/SKILL.md) | The agent workflow: analysis, verification algorithm, automated evidence, and manual exploration. |
+| [Artifact contract](skills/ai-assisted-qa/references/artifact-contract.md) | Required structure and quality criteria for each QA artifact. |
+| [Risk patterns](skills/ai-assisted-qa/references/risk-patterns.md) | Reusable reasoning for UI state, API contracts, data migrations, and asynchronous propagation. |
+| [Project rule snippet](skills/ai-assisted-qa/assets/project-agent-rules.md) | A short rule block to add to a project's local agent instructions. |
+| [Complete synthetic example](examples/reservation-state-propagation/) | A full chain from task brief to final report, with no real system data. |
 
-The final report maps every requirement to automated and manual evidence. It
-never calls itself a release approval: a human still makes that decision.
+## Adopt the Workflow
 
-## See a Complete Case First
+### 1. Install the Skill for Codex
 
-Python 3.12+ and [uv](https://docs.astral.sh/uv/) are required.
-
-```bash
-git clone https://github.com/ManMaxMotivation/AI.git
-cd AI
-uv run qa-case-pipeline demo \
-  --case reservation-state-propagation \
-  --output ./demo-reservation-case
-```
-
-Open `demo-reservation-case/artifacts/qa-report.md`. The synthetic case executes
-seven declared automated checks and shows four completed manual records for a
-realistic failure mode: an item becomes reserved, checkout rejects it before a
-cached page has refreshed, and the old page must not keep an active purchase
-action.
-
-The example is synthetic. It contains no production endpoint, customer data,
-credentials, private issue, or proprietary code.
-
-## Use It on Your Own Change
-
-Create an editable case from the same template:
+Clone this repository and copy the skill into your local Codex skills folder:
 
 ```bash
-uv run qa-case-pipeline init \
-  --template reservation-state-propagation \
-  --output ./cases/reservation-state
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+cp -R skills/ai-assisted-qa "${CODEX_HOME:-$HOME/.codex}/skills/"
 ```
 
-Edit these files before treating the result as evidence:
+For another AI agent, provide `SKILL.md` and its `references/` directory as the
+agent's operating instructions. The workflow is tool-agnostic.
+
+### 2. Add the Project Rule
+
+Copy the contents of
+[`project-agent-rules.md`](skills/ai-assisted-qa/assets/project-agent-rules.md)
+into your project's local agent instruction file. This tells the agent where to
+save artifacts and prevents it from treating a partial check as complete.
+
+### 3. Give the Agent a Real Task
+
+Use a direct request such as:
 
 ```text
-cases/reservation-state/
-  brief.yaml                 Change, acceptance criteria, risks, constraints
-  verification.yaml          Requirements and declarative automated assertions
-  evidence/*.json            Sanitized exports from approved test tooling
-  manual-results.yaml        What a tester actually observed
+Use $ai-assisted-qa for this task. Read the requirements, relevant code and
+existing tests. Create the full QA artifact chain under qa/<task-id>/.
+Do not run production mutations or claim a result that is not evidenced.
 ```
 
-Then run the case:
+The agent should create this chain:
 
-```bash
-uv run qa-case-pipeline prepare --case ./cases/reservation-state
-uv run qa-case-pipeline verify --case ./cases/reservation-state
-uv run qa-case-pipeline report --case ./cases/reservation-state
+```text
+qa/<task-id>/
+  analysis.md             Scope, requirements, dependencies, risks, blockers
+  algorithm.md            Verification sequence, evidence, stop conditions
+  automated-checks.md     Reusable checks and actual execution evidence
+  manual-test-cases.md    Exploratory and human-only scenarios
+  report.md               Requirement/DoD traceability and factual outcome
 ```
 
-`report` returns a non-zero exit code while an automated check fails or any
-manual check remains `not_run`, `blocked`, or `failed`. This makes it suitable
-for a CI step after your existing approved test jobs export evidence files.
+## The Four-Stage Method
 
-## How Evidence Verification Works
+1. **Analysis**: establish the source of truth, full scope, changed behavior,
+   dependencies, regression zones, and unresolved questions.
+2. **Algorithm**: turn the analysis into an ordered, evidence-backed path. It
+   states which layer is checked, by which tool, and when to stop.
+3. **Automated evidence**: reuse existing unit, contract, API, data, or browser
+   checks where they fit. Run only approved, relevant checks and preserve the
+   factual result.
+4. **Manual exploration**: investigate what automation cannot establish:
+   usability, visual quality, unusual paths, timing, external dependencies, and
+   product judgment.
 
-You keep the test execution where it belongs: in your approved unit, API,
-Playwright, data, or browser tooling. Export the facts needed for acceptance as
-local JSON and declare the assertions in `verification.yaml`.
+The final report does not replace a release decision. It makes the evidence,
+remaining uncertainty, and manual judgment visible to the person making one.
 
-```yaml
-evidence:
-  reserved_page: evidence/reserved-page.json
-automated_checks:
-  - id: AUTO-003
-    requirement: R-002
-    purpose: Reserved desktop action cannot open checkout.
-    source: reserved_page
-    assertions:
-      - pointer: /ui/desktop_action/enabled
-        operator: equals
-        value: false
-      - pointer: /ui/desktop_action/href
-        operator: exists
-        value: false
-```
+## Why This Is Different From a Generic Test Checklist
 
-The verifier uses standard JSON Pointers and supports `equals`, `not_equals`,
-`exists`, `contains`, and `matches`. It reads only JSON files inside the case
-directory. It does not run arbitrary shell commands, execute a target project,
-or access the network.
+A checklist often loses the link between a requirement, the changed code or
+data, the automated result, and the manual observation. This workflow requires
+that link. It also prevents two common failures:
 
-## The Included Realistic Template
+- reducing a complex task to a happy-path smoke check without a risk-based
+  reason;
+- claiming that an automated green run covers UI, data propagation, or user
+  behavior that it did not observe.
 
-`reservation-state-propagation` is an anonymized model of a complex delivery
-case. It covers:
+See the [synthetic example](examples/reservation-state-propagation/) for the
+expected depth and artifact flow.
 
-- available, reserved, and unavailable state contracts;
-- desktop, mobile, and comparison-page actions;
-- preservation of the existing available-item path;
-- the dangerous interval where checkout and page data disagree;
-- manual visual, keyboard, mobile, and end-to-end exploration.
+## Safety and Publication
 
-Replace the wording, requirements, local evidence exports, and manual results
-with your own sanitized case. The template deliberately starts manual results
-as `not_run`, so a copied case cannot accidentally be reported as complete.
+This repository deliberately contains no copied work artifacts. Before using a
+case as a public example, follow the
+[publication-safety checklist](docs/publication-safety.md). It covers tokens,
+credentials, private URLs, customer and test data, internal identifiers,
+screenshots, logs, and proprietary implementation details.
 
-## Optional Codex Drafting
+Automated secret scanning runs for pushes and pull requests. It is a safety net,
+not a replacement for human review.
 
-For a sanitized brief, Codex can draft the four-stage plan as structured JSON:
+## Scope
 
-```bash
-codex login
-uv run qa-case-pipeline plan \
-  --brief ./cases/reservation-state/brief.yaml \
-  --output ./drafted-plan
-```
+The playbook supplies a method and agent instructions. It does not promise that
+an LLM can independently test every system, infer missing requirements, access
+private environments, or replace a QA engineer. The work remains evidence-led,
+risk-based, and reviewable.
 
-This is a drafting aid, not the evidence engine. The command runs Codex in an
-empty temporary directory with read-only sandboxing and validates its output
-against a JSON Schema. Review the draft, then express the checks you truly need
-in `verification.yaml`.
-
-## Boundaries
-
-- Do not put credentials, private URLs, customer data, internal issue links, or
-  proprietary source code in a public case.
-- A passing report means the declared local evidence and recorded manual checks
-  are complete. It does not prove a production release is safe.
-- This tool does not replace product requirements, observability, security
-  review, or exploratory QA.
-
-For the methodology behind the workflow, see
-[docs/methodology.md](docs/methodology.md). The public GitHub-growth register
-is maintained in [docs/github-growth.md](docs/github-growth.md).
+Read [docs/adoption.md](docs/adoption.md) for a step-by-step adoption guide and
+[docs/methodology.md](docs/methodology.md) for the rationale behind the method.

@@ -1,8 +1,0 @@
-{
-  "http_status": 200,
-  "reservation": {"state": "available"},
-  "ui": {
-    "desktop_action": {"enabled": true, "href": "/checkout/item-available"},
-    "mobile_action": {"enabled": true, "href": "/checkout/item-available"}
-  }
-}

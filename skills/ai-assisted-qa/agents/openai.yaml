@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI-Assisted QA"
+  short_description: "Four-stage QA workflow for complex changes"
+  default_prompt: "Use $ai-assisted-qa to analyze this task and prepare traceable QA artifacts."
