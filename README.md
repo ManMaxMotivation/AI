@@ -25,7 +25,7 @@ ticket straight to a few happy-path checks.
 | [Route memory protocol](skills/ai-assisted-qa/references/route-memory.md) | A `compare -> reuse/update/add` method for reusing proven QA routes. |
 | [Eleven principles](skills/ai-assisted-qa/references/eleven-principles.md) | The non-negotiable operating rules distilled from a mature QA workflow. |
 | [Project rule snippet](skills/ai-assisted-qa/assets/project-agent-rules.md) | A short rule block to add to a project's local agent instructions. |
-| [Complete synthetic example](examples/reservation-state-propagation/) | A full chain from task brief to final report, with no real system data. |
+| [Complete synthetic example](examples/allocation-state-propagation/) | Six detailed artifacts, from task brief to final report, with no real system data. |
 
 ## Adopt the Workflow
 
@@ -132,8 +132,9 @@ that link. It also prevents two common failures:
 - claiming that an automated green run covers UI, data propagation, or user
   behavior that it did not observe.
 
-See the [synthetic example](examples/reservation-state-propagation/) for the
-expected depth and artifact flow.
+See the [synthetic example](examples/allocation-state-propagation/) for the
+expected depth and artifact flow. It intentionally demonstrates a detailed
+cross-layer case, not a short generic checklist.
 
 ## Safety and Publication
 
